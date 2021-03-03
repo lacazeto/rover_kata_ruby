@@ -10,11 +10,16 @@ class Rover
     @direction = direction
   end
 
-  def self.valid_command?(command)
-    @accepted_commands.include?(command.upcase)
+  def self.validate_command(command)
+    raise ArgumentError, "Invalid command #{command}" unless @accepted_commands.include?(command.upcase)
+
+    nil
   end
 
-  def self.valid_cardinal_direction?(direction)
-    @accepted_cardinal_directions.include?(direction.upcase)
+  def self.validate_cardinal_direction(direction)
+    raise ArgumentError, "Invalid cardinal direction #{direction}" unless
+      @accepted_cardinal_directions.include?(direction.upcase)
+
+    nil
   end
 end

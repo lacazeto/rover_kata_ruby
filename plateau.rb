@@ -1,39 +1,50 @@
 # frozen_string_literal: true
 
 require_relative 'rover'
+require_relative 'helpers/integer_parser'
 
 # Class to render the Plateau
 class Plateau
   attr_reader :grid, :rovers
 
   def initialize(columns, rows)
+    Plateau.validate_boundaries(columns, rows)
+
     @grid = grid_setup(columns, rows)
     @rovers = {}
   end
 
-  # def update_rover_position(rover)
-  #   raise ArgumentError, "Command #{command} is not a valid command."
-  # end
-
-  def add_hover(position:, direction:)
-    rover_number = @rovers.size + 1
-    @rovers[rover_number] = Rover.new(position, direction)
+  def add_hover(x, y, direction)
+    validate_hover_position(x, y)
+    Rover.validate_cardinal_direction(direction)
   end
 
-  def self.validate_boundaries(columns, rows)
-    columns_value = Integer(columns)
-    rows_value = Integer(rows)
-    raise ArgumentError if columns_value.abs != columns_value || rows_value.abs != rows_value
+  def validate_hover_position(x, y)
+    IntegerParser.validate_positive_integer(x, y)
+    zero_index_x = x.to_i + 1
+    zero_index_y = y.to_i + 1
+
+    raise ArgumentError, 'Hover position falls off plateau boundaries' if
+      zero_index_x > @grid[0].size || zero_index_y > @grid.size
+  end
+
+  def self.validate_boundaries(x, y)
+    IntegerParser.validate_positive_integer(x, y)
   rescue ArgumentError
     raise ArgumentError, 'Invalid arguments for the upper-right coordinate. Expecting only positive integers'
   end
 
   private
 
-  def grid_setup(columns, rows)
+  def deploy_hover(position:, direction:)
+    rover_number = @rovers.size + 1
+    @rovers[rover_number] = Rover.new(position, direction)
+  end
+
+  def grid_setup(x, y)
     grid = []
-    zero_index_columns = columns + 1
-    (0..rows).each { grid.push(Array.new(zero_index_columns)) }
+    zero_index_x = x.to_i + 1
+    (0..y.to_i).each { grid.push(Array.new(zero_index_x)) }
 
     grid
   end
