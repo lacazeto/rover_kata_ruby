@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
+require 'mocha/minitest'
 require_relative '../plateau'
 
 class TestPlateau < Minitest::Spec
@@ -45,10 +46,11 @@ class TestPlateau < Minitest::Spec
     assert_equal 1, plateau.grid[3][1]
   end
 
-  def test_updates_position_for_every_rover_movement
+  def test_calls_rover_to_update_its_direction
     plateau = Plateau.new('2', '2')
     plateau.add_rover('1', '2', 'N')
+    Rover.any_instance.stubs(:rotate)
+    Rover.any_instance.expects(:rotate).with('L').at_least_once
     plateau.move_rover('L', 'M', rover: 1)
-    assert_equal 'W', plateau.rovers[1].direction
   end
 end
