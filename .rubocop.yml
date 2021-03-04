@@ -10,3 +10,9 @@ Layout/LineLength:
 
 Style/ClassVars:
   Enabled: false
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/AbcSize:
+  Enabled: false

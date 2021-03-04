@@ -18,5 +18,5 @@ plateau = Plateau.new(grid_x, grid_y)
 
 rover_instructions.each_slice(2).with_index do |(position, commands), index|
   plateau.add_rover(*position.split)
-  plateau.move_rover(commands, rover: index + 1)
+  plateau.move_rover(*commands.split, rover: index + 1)
 end

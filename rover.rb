@@ -31,6 +31,10 @@ class Rover
     @direction = @@rotation[value][@direction]
   end
 
+  def update_position(position)
+    @position = { x: position[:x], y: position[:y] }
+  end
+
   def self.validate_command(command)
     raise ArgumentError, "Invalid command #{command}" unless @@accepted_commands.include?(command.upcase)
   end

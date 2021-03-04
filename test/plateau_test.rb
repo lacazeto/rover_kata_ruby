@@ -17,13 +17,13 @@ class TestPlateau < Minitest::Spec
   end
 
   def test_checks_rover_poistion_is_valid
-    plateau = Plateau.new(5, 5)
-    assert_nil plateau.validate_rover_position('2', '5')
-    assert_nil plateau.validate_rover_position('3', '3')
-    assert_nil plateau.validate_rover_position('5', '0')
+    plateau = Plateau.new(5, 5) # 6x6 grid
+    assert_nil plateau.validate_rover_position(2, 5)
+    assert_nil plateau.validate_rover_position(3, 3)
+    assert_nil plateau.validate_rover_position(6, 0)
 
-    err = expect { plateau.validate_rover_position('6', '0') }.must_raise ArgumentError
-    expect(err.message).must_match(/rover position falls off plateau boundaries/)
+    err = expect { plateau.validate_rover_position(7, 0) }.must_raise IndexError
+    expect(err.message).must_match(/Rover position falls off plateau boundaries/)
   end
 
   def test_plateau_grid_was_correctly_generated
@@ -51,6 +51,17 @@ class TestPlateau < Minitest::Spec
     plateau.add_rover('1', '2', 'N')
     Rover.any_instance.stubs(:rotate)
     Rover.any_instance.expects(:rotate).with('L').at_least_once
-    plateau.move_rover('L', 'M', rover: 1)
+    plateau.move_rover('L', rover: 1)
+  end
+
+  def test_prevents_hover_from_moving_to_already_occupied_space
+    plateau = Plateau.new('2', '2')
+    plateau.add_rover('1', '1', 'N')
+
+    assert_nil plateau.check_for_obstacles(1, 0)
+    assert_nil plateau.check_for_obstacles(0, 1)
+
+    err = expect { plateau.check_for_obstacles(1, 1) }.must_raise RuntimeError
+    expect(err.message).must_match(/Rover cannot move to an already occupied block/)
   end
 end
