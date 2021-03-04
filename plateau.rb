@@ -18,7 +18,6 @@ class Plateau
     validate_rover_landing_position(x, y)
     Rover.validate_cardinal_direction(direction)
     deploy_rover(x.to_i, y.to_i, direction)
-    debug
   end
 
   def move_rover(*commands, rover:)
@@ -33,10 +32,6 @@ class Plateau
       else
         @rovers[rover].rotate(value)
       end
-
-      print('value ', value, "\n")
-      print('direction ', @rovers[rover].direction, "\n")
-      debug
     end
   end
 
@@ -64,7 +59,6 @@ class Plateau
   def track_positions(rover)
     old_position = rovers[rover]&.position
     direction = rovers[rover]&.direction
-    p old_position
     case direction
     when 'N'
       new_position = { x: old_position[:x], y: old_position[:y] - 1 }
@@ -79,16 +73,24 @@ class Plateau
     [old_position, new_position]
   end
 
+  def rover_details
+    @rovers.map do |key, rover|
+      computer_coordinate = rover.position
+      cartesian_coordinate = { x: computer_coordinate[:x], y: computer_cartesian_coordinate_translation(computer_coordinate[:y]) }
+      { "rover_#{key}" => { position: cartesian_coordinate, direction: rover.direction } }
+    end
+  end
+
   private
 
   def deploy_rover(x, y, direction)
     rover_number = @rovers.size + 1
-    cartesian_y = coordinate_catersian_vertical_axis_swap(y)
+    cartesian_y = computer_cartesian_coordinate_translation(y)
     @rovers[rover_number] = Rover.new(position: { x: x, y: cartesian_y }, direction: direction)
     @grid[cartesian_y][x] = rover_number
   end
 
-  def coordinate_catersian_vertical_axis_swap(y)
+  def computer_cartesian_coordinate_translation(y)
     @grid.size - y - 1
   end
 
@@ -103,9 +105,5 @@ class Plateau
   def grid_refresh(rover, old_position, new_position)
     grid[old_position[:y]][old_position[:x]] = 0
     grid[new_position[:y]][new_position[:x]] = rover
-  end
-
-  def debug
-    @grid.each { |x| puts x.join(' ') }
   end
 end

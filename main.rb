@@ -20,3 +20,5 @@ rover_instructions.each_slice(2).with_index do |(position, commands), index|
   plateau.add_rover(*position.split)
   plateau.move_rover(*commands.split, rover: index + 1)
 end
+
+puts plateau.rover_details
