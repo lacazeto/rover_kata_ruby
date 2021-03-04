@@ -17,6 +17,7 @@ class Plateau
   def add_hover(x, y, direction)
     validate_hover_position(x, y)
     Rover.validate_cardinal_direction(direction)
+    deploy_hover(x, y, direction)
   end
 
   def validate_hover_position(x, y)
@@ -29,16 +30,15 @@ class Plateau
   end
 
   def self.validate_boundaries(x, y)
-    IntegerParser.validate_positive_integer(x, y)
-  rescue ArgumentError
-    raise ArgumentError, 'Invalid arguments for the upper-right coordinate. Expecting only positive integers'
+    error_message = 'Invalid arguments for the upper-right coordinate. Expecting only positive integers'
+    IntegerParser.validate_positive_integer(x, y, error_message: error_message)
   end
 
   private
 
-  def deploy_hover(position:, direction:)
+  def deploy_hover(x, y, direction)
     rover_number = @rovers.size + 1
-    @rovers[rover_number] = Rover.new(position, direction)
+    @rovers[rover_number] = Rover.new(position: { x: x, y: y }, direction: direction)
   end
 
   def grid_setup(x, y)
