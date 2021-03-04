@@ -9,3 +9,4 @@ With RubyGems intalled on your machine, run:
 - `$ bundle exec ruby main.rb`
 
 ### Running tests
+- `$ rake`
