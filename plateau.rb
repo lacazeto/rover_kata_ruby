@@ -3,7 +3,7 @@
 require_relative 'rover'
 require_relative 'helpers/integer_parser'
 
-# Class to render the Plateau
+# Class to represent the Plateau
 class Plateau
   attr_reader :grid, :rovers
 
@@ -14,18 +14,31 @@ class Plateau
     @rovers = {}
   end
 
-  def add_hover(x, y, direction)
-    validate_hover_position(x, y)
+  def add_rover(x, y, direction)
+    validate_rover_position(x, y)
     Rover.validate_cardinal_direction(direction)
-    deploy_hover(x, y, direction)
+    deploy_rover(x.to_i, y.to_i, direction)
   end
 
-  def validate_hover_position(x, y)
+  def move_rover(*commands, rover:)
+    commands.each do |value|
+      case value
+      when 'M'
+        # new_position = 'bla'
+        # validate_rover_position(new_position)
+        # Update the rover
+      else
+        @rovers[rover].rotate(value)
+      end
+    end
+  end
+
+  def validate_rover_position(x, y)
     IntegerParser.validate_positive_integer(x, y)
     zero_index_x = x.to_i + 1
     zero_index_y = y.to_i + 1
 
-    raise ArgumentError, 'Hover position falls off plateau boundaries' if
+    raise ArgumentError, 'rover position falls off plateau boundaries' if
       zero_index_x > @grid[0].size || zero_index_y > @grid.size
   end
 
@@ -36,9 +49,14 @@ class Plateau
 
   private
 
-  def deploy_hover(x, y, direction)
+  def deploy_rover(x, y, direction)
     rover_number = @rovers.size + 1
     @rovers[rover_number] = Rover.new(position: { x: x, y: y }, direction: direction)
+    @grid[catersian_vertical_axis(y)][x] = rover_number
+  end
+
+  def catersian_vertical_axis(y)
+    @grid.size - y - 1
   end
 
   def grid_setup(x, y)

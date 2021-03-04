@@ -15,14 +15,14 @@ class TestPlateau < Minitest::Spec
     assert_nil Plateau.validate_boundaries('0', '0')
   end
 
-  def test_checks_hover_poistion_is_valid
+  def test_checks_rover_poistion_is_valid
     plateau = Plateau.new(5, 5)
-    assert_nil plateau.validate_hover_position('2', '5')
-    assert_nil plateau.validate_hover_position('3', '3')
-    assert_nil plateau.validate_hover_position('5', '0')
+    assert_nil plateau.validate_rover_position('2', '5')
+    assert_nil plateau.validate_rover_position('3', '3')
+    assert_nil plateau.validate_rover_position('5', '0')
 
-    err = expect { plateau.validate_hover_position('6', '0') }.must_raise ArgumentError
-    expect(err.message).must_match(/Hover position falls off plateau boundaries/)
+    err = expect { plateau.validate_rover_position('6', '0') }.must_raise ArgumentError
+    expect(err.message).must_match(/rover position falls off plateau boundaries/)
   end
 
   def test_plateau_grid_was_correctly_generated
@@ -35,13 +35,20 @@ class TestPlateau < Minitest::Spec
     assert_equal 36, plateau2.grid.flatten.size
   end
 
-  def test_keeps_track_of_deployed_hovers
-    plateau = Plateau.new(5, 5)
+  def test_keeps_track_of_deployed_rovers
+    plateau = Plateau.new('5', '5')
     assert_equal 0, plateau.rovers.size
 
-    plateau.send :deploy_hover, 1, 2, 'N'
+    plateau.add_rover('1', '2', 'N')
     assert_equal 1, plateau.rovers.size
     assert_equal ({ x: 1, y: 2 }), plateau.rovers[1].position
-    assert_equal 'N', plateau.rovers[1].direction
+    assert_equal 1, plateau.grid[3][1]
+  end
+
+  def test_updates_position_for_every_rover_movement
+    plateau = Plateau.new('2', '2')
+    plateau.add_rover('1', '2', 'N')
+    plateau.move_rover('L', 'M', rover: 1)
+    assert_equal 'W', plateau.rovers[1].direction
   end
 end

@@ -30,4 +30,14 @@ class TestPlateau < Minitest::Spec
     assert_nil Rover.validate_cardinal_direction('N')
     assert_nil Rover.validate_cardinal_direction('n')
   end
+
+  def test_updates_direction_on_every_rotation
+    rover = Rover.new(position: { x: 1, y: 1 }, direction: 'N')
+    rover.rotate('L')
+    assert_equal 'W', rover.direction
+
+    rover = Rover.new(position: { x: 1, y: 1 }, direction: 'E')
+    rover.rotate('R')
+    assert_equal 'S', rover.direction
+  end
 end

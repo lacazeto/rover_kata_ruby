@@ -12,10 +12,11 @@ execution_input = <<~HERE
 HERE
 
 grid_size, *rover_instructions = execution_input.split("\n")
-grid_x, grid_y = grid_size.split
 
+grid_x, grid_y = grid_size.split
 plateau = Plateau.new(grid_x, grid_y)
 
-rover_instructions.each_slice(2) do |position, commands|
-  plateau.add_hover(*position.split)
+rover_instructions.each_slice(2).with_index do |(position, commands), index|
+  plateau.add_rover(*position.split)
+  plateau.move_rover(commands, rover: index + 1)
 end
