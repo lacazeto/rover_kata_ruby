@@ -4,3 +4,9 @@ AllCops:
 
 Naming/MethodParameterName:
   Enabled: false
+
+Layout/LineLength:
+  Max: 140
+
+Style/ClassVars:
+  Enabled: false
