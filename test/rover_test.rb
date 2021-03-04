@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require_relative '../rover'
+require_relative '../lib/rover'
 
 class TestPlateau < Minitest::Spec
   def test_valid_command_was_passed

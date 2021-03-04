@@ -2,7 +2,7 @@
 
 require 'minitest/autorun'
 require 'mocha/minitest'
-require_relative '../plateau'
+require_relative '../lib/plateau'
 
 class TestPlateau < Minitest::Spec
   def test_checks_passed_boundaries_are_valid
@@ -42,7 +42,8 @@ class TestPlateau < Minitest::Spec
 
     plateau.add_rover('1', '2', 'N')
     assert_equal 1, plateau.rovers.size
-    assert_equal ({ x: 1, y: 2 }), plateau.rovers[1].position
+    # (1, 2) in cartesian coordinates become (1, 3) in computer coordinates in a 5x5 grid.
+    assert_equal ({ x: 1, y: 3 }), plateau.rovers[1].position
     assert_equal 1, plateau.grid[3][1]
   end
 

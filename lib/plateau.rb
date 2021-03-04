@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'rover'
-require_relative 'helpers/integer_parser'
+require_relative '../helpers/integer_parser'
 
 # Class to represent the Plateau
 class Plateau
