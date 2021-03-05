@@ -5,7 +5,7 @@ require_relative '../helpers/integer_parser'
 
 # Class to represent the Plateau
 class Plateau
-  attr_reader :grid, :rovers
+  attr_reader :grid
 
   def initialize(columns, rows)
     Plateau.validate_boundaries(columns, rows)
@@ -57,8 +57,8 @@ class Plateau
   end
 
   def track_positions(rover)
-    old_position = rovers[rover]&.position
-    direction = rovers[rover]&.direction
+    old_position = @rovers[rover]&.position
+    direction = @rovers[rover]&.direction
     case direction
     when 'N'
       new_position = { x: old_position[:x], y: old_position[:y] - 1 }
@@ -73,11 +73,11 @@ class Plateau
     [old_position, new_position]
   end
 
-  def rover_details
+  def rovers
     @rovers.map do |key, rover|
       computer_coordinate = rover.position
       cartesian_coordinate = { x: computer_coordinate[:x], y: computer_cartesian_coordinate_translation(computer_coordinate[:y]) }
-      { "rover_#{key}" => { position: cartesian_coordinate, direction: rover.direction } }
+      { "Rover_#{key}" => { position: cartesian_coordinate, direction: rover.direction } }
     end
   end
 
