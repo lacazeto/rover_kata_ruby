@@ -44,7 +44,7 @@ class Plateau
   end
 
   def validate_rover_position(x, y)
-    raise IndexError, 'Rover position falls off plateau boundaries' if x > @grid[0]&.size || y > @grid&.size
+    raise IndexError, 'Rover position falls off plateau boundaries' if x > @grid[0].size || y > @grid.size
   end
 
   def check_for_obstacles(x, y)
@@ -57,8 +57,8 @@ class Plateau
   end
 
   def track_positions(rover)
-    old_position = @rovers[rover]&.position
-    direction = @rovers[rover]&.direction
+    old_position = @rovers[rover].position
+    direction = @rovers[rover].direction
     case direction
     when 'N'
       new_position = { x: old_position[:x], y: old_position[:y] - 1 }
