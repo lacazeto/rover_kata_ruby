@@ -11,4 +11,5 @@ An instruction file can be found at 'test/fixture/command.txt'. Ex:
 - `$ bundle exec ruby main.rb test/fixture/command.txt`
 
 ### Running tests
-- `$ rake test`
+- `$ rake test:unit`
+- `$ rake test:integration`

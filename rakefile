@@ -2,8 +2,14 @@
 
 require 'rake/testtask'
 
-task default: 'test'
+task default: 'test:unit'
 
-Rake::TestTask.new do |task|
-  task.pattern = 'test/*_test.rb'
+namespace :test do
+  Rake::TestTask.new(:unit) do |task|
+    task.pattern = 'test/*_test.rb'
+  end
+
+  Rake::TestTask.new(:integration) do |task|
+    task.pattern = 'test/integration/*_test.rb'
+  end
 end
