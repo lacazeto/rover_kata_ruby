@@ -22,8 +22,7 @@ rover_instructions.each_slice(2).with_index do |(position, commands), index|
   plateau.move_rover(*commands.split, rover: index + 1)
 end
 
-plateau.rovers.each do |rover_details|
-  rover = rover_details.keys[0]
-  print("#{rover} final location is (#{rover_details[rover][:position][:x]}, #{rover_details[rover][:position][:y]}) "\
-        "pointing to #{rover_details[rover][:direction]}\n")
+plateau.rovers_in_cartesian_plain.each do |rover|
+  print("Rover_#{rover[:id]} final location is (#{rover[:position][:x]}, #{rover[:position][:y]}) "\
+        "pointing to #{rover[:direction]}\n")
 end

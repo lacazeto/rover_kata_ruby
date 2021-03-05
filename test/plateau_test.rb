@@ -47,6 +47,12 @@ class TestPlateau < Minitest::Spec
     assert_equal 1, plateau.grid[3][1]
   end
 
+  def test_outputs_rover_position_in_cartesian_readable_format
+    plateau = Plateau.new('3', '3')
+    plateau.add_rover('1', '2', 'N')
+    assert_equal ({ x: 1, y: 2 }), plateau.rovers_in_cartesian_plain.first[:position]
+  end
+
   def test_calls_rover_to_update_its_direction
     plateau = Plateau.new('2', '2')
     plateau.add_rover('1', '2', 'N')
